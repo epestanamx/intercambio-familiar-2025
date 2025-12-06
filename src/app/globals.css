@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1a1a2e;
+  --foreground: #eaeaea;
+  --christmas-red: #c41e3a;
+  --christmas-green: #228b22;
+  --christmas-gold: #ffd700;
+  --snow-white: #fffafa;
 }
 
 @theme inline {
@@ -12,15 +16,123 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: var(--foreground);
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Animación de nieve */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(20px);
+    opacity: 0.3;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.snowflake {
+  position: fixed;
+  color: white;
+  font-size: 1.5rem;
+  pointer-events: none;
+  animation: snowfall linear infinite;
+  z-index: 1000;
+}
+
+/* Animación de ruleta */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+  }
+}
+
+.roulette-container {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.spinning {
+  animation: spin 0.1s linear infinite;
+}
+
+/* Efecto de brillo para el resultado */
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.reveal-animation {
+  animation: reveal 0.8s ease-out forwards;
+}
+
+/* Botón navideño */
+.christmas-button {
+  background: linear-gradient(145deg, #c41e3a, #8b0000);
+  border: 3px solid #ffd700;
+  transition: all 0.3s ease;
+}
+
+.christmas-button:hover {
+  background: linear-gradient(145deg, #e52b50, #c41e3a);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.christmas-button:disabled {
+  background: linear-gradient(145deg, #666, #444);
+  border-color: #888;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Tarjeta navideña */
+.christmas-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 20px;
+}
+
+/* Animación de confeti */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  animation: confetti-fall 3s linear forwards;
+  z-index: 1001;
 }
