@@ -50,11 +50,11 @@ export default function AdminPage() {
       const response = await fetch('/api/participants', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newName.trim() }),
+        body: JSON.stringify({ names: newName }),
       })
 
       if (!response.ok) {
-        throw new Error('Error al agregar participante')
+        throw new Error('Error al agregar participante(s)')
       }
 
       setNewName('')
@@ -100,14 +100,26 @@ export default function AdminPage() {
     }
   }
 
+  const getBaseUrl = () => process.env.NEXT_PUBLIC_APP_URL || window.location.origin
+
   const copyLink = async (slug: string) => {
-    const url = `${window.location.origin}/sorteo/${slug}`
-    await navigator.clipboard.writeText(url)
+    const url = `${getBaseUrl()}/sorteo/${slug}`
+    const message = `Te han invitado a unirte a Intercambio familiar 2025! Crea una lista de deseos, elige un nombre y que empiece la magia.
+
+Fecha del intercambio de regalos:
+miércoles, 24 de diciembre de 2025
+
+Presupuesto:
+Mex$200
+
+Haz clic en el enlace de invitación para unirse:
+${url}`
+    await navigator.clipboard.writeText(message)
     setCopied(slug)
     setTimeout(() => setCopied(null), 2000)
   }
 
-  const getLink = (slug: string) => `${typeof window !== 'undefined' ? window.location.origin : ''}/sorteo/${slug}`
+  const getLink = (slug: string) => `${getBaseUrl()}/sorteo/${slug}`
 
   const startEditing = (participant: Participant) => {
     setEditingId(participant.id)
@@ -170,20 +182,20 @@ export default function AdminPage() {
             </Link>
           </div>
 
-          <form onSubmit={handleAddParticipant} className="flex gap-4 mb-6">
-            <input
-              type="text"
+          <form onSubmit={handleAddParticipant} className="mb-6">
+            <textarea
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="Nombre del participante"
-              className="flex-1 px-4 py-3 rounded-lg bg-white/10 border-2 border-yellow-400/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400"
+              placeholder="Ingresa los nombres (uno por línea)"
+              rows={4}
+              className="w-full px-4 py-3 rounded-lg bg-white/10 border-2 border-yellow-400/30 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 resize-y mb-4"
             />
             <button
               type="submit"
               disabled={adding || !newName.trim()}
-              className="christmas-button px-6 py-3 rounded-lg text-white font-bold"
+              className="christmas-button px-6 py-3 rounded-lg text-white font-bold w-full md:w-auto"
             >
-              {adding ? 'Agregando...' : '+ Agregar'}
+              {adding ? 'Agregando...' : '+ Agregar Participantes'}
             </button>
           </form>
 
@@ -214,7 +226,7 @@ export default function AdminPage() {
           ) : participants.length === 0 ? (
             <div className="text-center py-8 bg-white/5 rounded-lg">
               <p className="text-gray-300">No hay participantes aún</p>
-              <p className="text-gray-400 text-sm mt-2">Agrega participantes usando el formulario de arriba</p>
+              <p className="text-gray-400 text-sm mt-2">Agrega participantes usando el formulario de arriba (uno por línea)</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -286,7 +298,7 @@ export default function AdminPage() {
                       onClick={() => copyLink(participant.slug)}
                       className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded text-white text-sm font-medium transition-colors whitespace-nowrap"
                     >
-                      {copied === participant.slug ? '¡Copiado!' : 'Copiar'}
+                      {copied === participant.slug ? '¡Copiado!' : 'Copiar Invitación'}
                     </button>
                     <button
                       onClick={() => handleDelete(participant.id)}
@@ -304,7 +316,7 @@ export default function AdminPage() {
         <div className="christmas-card p-6">
           <h2 className="text-xl font-bold text-yellow-300 mb-4">📋 Instrucciones</h2>
           <ol className="list-decimal list-inside space-y-2 text-gray-300">
-            <li>Agrega todos los participantes del sorteo</li>
+            <li>Agrega todos los participantes del sorteo (puedes agregar varios a la vez, uno por línea)</li>
             <li>Copia el enlace personal de cada participante</li>
             <li>Envía cada enlace a la persona correspondiente (por correo, WhatsApp, etc.)</li>
             <li>Cada persona entrará a su enlace y presionará el botón para descubrir su amigo secreto</li>

@@ -13,6 +13,14 @@ function generateSlug(name: string): string {
   return `${base}-${random}`
 }
 
+function capitalizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
 export async function GET() {
   try {
     const participants = await prisma.participant.findMany({
@@ -32,8 +40,38 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { name } = await request.json()
+    const { name, names } = await request.json()
 
+    // Soporte para múltiples nombres (uno por línea)
+    if (names && typeof names === 'string') {
+      const nameList = names
+        .split('\n')
+        .map(n => n.trim())
+        .filter(n => n.length > 0)
+
+      if (nameList.length === 0) {
+        return NextResponse.json(
+          { error: 'Al menos un nombre es requerido' },
+          { status: 400 }
+        )
+      }
+
+      const participants = await prisma.$transaction(
+        nameList.map(n => {
+          const capitalizedName = capitalizeName(n)
+          return prisma.participant.create({
+            data: {
+              name: capitalizedName,
+              slug: generateSlug(capitalizedName),
+            },
+          })
+        })
+      )
+
+      return NextResponse.json(participants, { status: 201 })
+    }
+
+    // Soporte para un solo nombre (retrocompatibilidad)
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return NextResponse.json(
         { error: 'Nombre requerido' },
@@ -41,11 +79,12 @@ export async function POST(request: Request) {
       )
     }
 
-    const slug = generateSlug(name.trim())
+    const capitalizedName = capitalizeName(name.trim())
+    const slug = generateSlug(capitalizedName)
 
     const participant = await prisma.participant.create({
       data: {
-        name: name.trim(),
+        name: capitalizedName,
         slug,
       },
     })
