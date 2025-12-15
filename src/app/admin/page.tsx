@@ -102,9 +102,9 @@ export default function AdminPage() {
 
   const getBaseUrl = () => process.env.NEXT_PUBLIC_APP_URL || window.location.origin
 
-  const copyLink = async (slug: string) => {
+  const copyLink = async (slug: string, name: string) => {
     const url = `${getBaseUrl()}/sorteo/${slug}`
-    const message = `Te han invitado a unirte a Intercambio familiar 2025! Crea una lista de deseos, elige un nombre y que empiece la magia.
+    const message = `Hola ${name}, te han invitado a unirte a Intercambio familiar 2025! Crea una lista de deseos, elige un nombre y que empiece la magia.
 
 Fecha del intercambio de regalos:
 miércoles, 24 de diciembre de 2025
@@ -295,7 +295,7 @@ ${url}`
                       className="bg-white/10 px-3 py-2 rounded text-sm text-gray-300 w-full md:w-64"
                     />
                     <button
-                      onClick={() => copyLink(participant.slug)}
+                      onClick={() => copyLink(participant.slug, participant.name)}
                       className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded text-white text-sm font-medium transition-colors whitespace-nowrap"
                     >
                       {copied === participant.slug ? '¡Copiado!' : 'Copiar Invitación'}
