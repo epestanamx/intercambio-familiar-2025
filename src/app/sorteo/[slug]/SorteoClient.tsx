@@ -80,7 +80,7 @@ export default function SorteoClient({ participant, allNames }: SorteoClientProp
             <p className="text-lg text-yellow-200 mb-2">
               Recuerda, el monto del regalo es:
             </p>
-            <p className="text-3xl font-bold text-yellow-400">$300 MXN</p>
+            <p className="text-3xl font-bold text-yellow-400">$200 MXN</p>
           </div>
 
           <p className="text-gray-300 text-lg">
@@ -133,7 +133,7 @@ export default function SorteoClient({ participant, allNames }: SorteoClientProp
         </h1>
 
         <h2 className="text-xl text-white mb-8">
-          Posada Navideña <br />PDA Consultores 2025
+          Intercambio Navideño 2025
         </h2>
 
         <div className="text-8xl my-8">🎁</div>
@@ -160,7 +160,7 @@ export default function SorteoClient({ participant, allNames }: SorteoClientProp
 
         <div className="mt-8 bg-green-800/50 rounded-xl p-4 border-2 border-yellow-400/50">
           <p className="text-yellow-200">
-            Monto del intercambio: <span className="font-bold text-yellow-400">$300 MXN</span>
+            Monto del intercambio: <span className="font-bold text-yellow-400">$200 MXN</span>
           </p>
         </div>
 

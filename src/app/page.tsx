@@ -10,8 +10,7 @@ export default function Home() {
         <div className="text-6xl mb-6">🎄</div>
 
         <h1 className="text-3xl md:text-5xl font-bold text-yellow-300 mb-4">
-          Posada Navideña <br />
-          PDA Consultores 2025
+          Intercambio Navideño 2025
         </h1>
 
         <div className="text-6xl my-6">🎁</div>
@@ -25,7 +24,7 @@ export default function Home() {
             Monto del intercambio:
           </p>
           <p className="text-4xl md:text-5xl font-bold text-yellow-400">
-            $300 MXN
+            $200 MXN
           </p>
         </div>
 

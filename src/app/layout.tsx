@@ -8,8 +8,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Sorteo Navideño PDA Consultores 2025",
-  description: "Sorteo de Amigo Secreto para la Posada Navideña de PDA Consultores",
+  title: "Intercambio Navideño 2025",
+  description: "Sorteo de Amigo Secreto para el Intercambio Navideño 2025",
 };
 
 export default function RootLayout({
